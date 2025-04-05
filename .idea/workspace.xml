@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb460bf0-9661-415a-bcb6-90aaf45246f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="bb460bf0-9661-415a-bcb6-90aaf45246f9" name="Changes" comment="build: added sonarcloud config to pom.xml">
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +26,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
@@ -49,8 +50,33 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743883848217</updated>
-      <workItem from="1743883849184" duration="2000" />
+      <workItem from="1743883849184" duration="207000" />
     </task>
+    <task id="LOCAL-00001" summary="project setup">
+      <option name="closed" value="true" />
+      <created>1743883890507</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743883890507</updated>
+    </task>
+    <task id="LOCAL-00002" summary="build: added sonarcloud config to pom.xml">
+      <option name="closed" value="true" />
+      <created>1743883970065</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743883970066</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="project setup" />
+    <MESSAGE value="build: added sonarcloud config to pom.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: added sonarcloud config to pom.xml" />
   </component>
 </project>
