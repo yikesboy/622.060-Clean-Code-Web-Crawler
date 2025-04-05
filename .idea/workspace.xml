@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb460bf0-9661-415a-bcb6-90aaf45246f9" name="Changes" comment="build: added commonmark dependency">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/CrawlConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/WebCrawler.java" afterDir="false" />
+    <list default="true" id="bb460bf0-9661-415a-bcb6-90aaf45246f9" name="Changes" comment="feat: implemented CrawlConfig class">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/WebCrawler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,10 +23,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2vKBNwTGZmNN6oyorTM9Rczn32B" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -38,6 +38,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -64,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743883848217</updated>
-      <workItem from="1743883849184" duration="2046000" />
+      <workItem from="1743883849184" duration="3139000" />
     </task>
     <task id="LOCAL-00001" summary="project setup">
       <option name="closed" value="true" />
@@ -98,7 +99,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743884464589</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: implemented CrawlConfig class">
+      <option name="closed" value="true" />
+      <created>1743886044993</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743886044993</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +118,7 @@
     <MESSAGE value="build: added sonarcloud config to pom.xml" />
     <MESSAGE value="build: added jsoup dependency" />
     <MESSAGE value="build: added commonmark dependency" />
-    <option name="LAST_COMMIT_MESSAGE" value="build: added commonmark dependency" />
+    <MESSAGE value="feat: implemented CrawlConfig class" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implemented CrawlConfig class" />
   </component>
 </project>
