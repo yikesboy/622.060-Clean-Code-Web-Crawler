@@ -1,41 +1,45 @@
 package org.example.parser;
 
+import html.HtmlDocument;
+import html.HtmlDocumentFetcher;
+import html.jsoup.JsoupDocumentFetcher;
 import org.example.models.Heading;
 import org.example.models.WebPage;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PageParser implements PageParserInterface {
     private static final int DEFAULT_TIMEOUT_MS = 5000;
-    private static final String HEADLINE_SELECTOR_QUERY = "h1, h2, h3, h4, h5, h6";
 
-    private final int timeoutMs;
+    private final HtmlDocumentFetcher documentFetcher;
+    private final HeadingExtractor headingExtractor;
+    private final LinkExtractor linkExtractor;
 
     public PageParser() {
         this(DEFAULT_TIMEOUT_MS);
     }
 
     public PageParser(int timeoutMs) {
-        this.timeoutMs = timeoutMs;
+        this.documentFetcher = new JsoupDocumentFetcher(timeoutMs);
+        this.headingExtractor = new HeadingExtractor();
+        this.linkExtractor = new LinkExtractor();
     }
 
     @Override
     public WebPage parse(URL url, int depth) {
+        if (url == null) {
+            throw new IllegalArgumentException("Url cannot be null.");
+        }
         if (depth < 0) {
             throw new IllegalArgumentException("Depth cannot be negative.");
         }
 
         try {
-            Document doc = fetchDocument(url);
-            List<Heading> headings = extractHeadings(doc);
+            HtmlDocument document = documentFetcher.fetch(url);
+            List<Heading> headings = headingExtractor.extractHeadings(document);
             return new WebPage(url, headings, depth);
         } catch (IOException e) {
             return new WebPage(url, depth, true);
@@ -44,64 +48,15 @@ public class PageParser implements PageParserInterface {
 
     @Override
     public List<URL> extractLinks(URL url) {
+        if (url == null) {
+            return new ArrayList<>();
+        }
+
         try {
-            Document doc = fetchDocument(url);
-            return extractUrlsFromDocument(doc);
+            HtmlDocument doc = documentFetcher.fetch(url);
+            return linkExtractor.extractLinks(doc, url);
         } catch (IOException e) {
             return new ArrayList<>();
         }
-    }
-
-    private Document fetchDocument(URL url) throws IOException {
-        return Jsoup.connect(url.toString()).timeout(timeoutMs).get();
-    }
-
-    private List<URL> extractUrlsFromDocument(Document doc) {
-        List<URL> validUrls = new ArrayList<>();
-        Elements links = doc.select("a[href]");
-
-        for (Element link : links) {
-            String href = link.attr("abs:href");
-            if (!isValidHref(href)) {
-                continue;
-            }
-
-            tryAddValidUrl(href, validUrls);
-        }
-
-        return validUrls;
-    }
-
-    private boolean isValidHref(String href) {
-        if (href == null || href.trim().isEmpty()) {
-            return false;
-        }
-        String lowerHref = href.toLowerCase();
-        return !lowerHref.isEmpty() &&
-                !lowerHref.startsWith("javascript:") &&
-                !lowerHref.startsWith("#");
-    }
-
-    private void tryAddValidUrl(String href, List<URL> validUrls) {
-        URL url;
-        try {
-            url = new URL(href);
-        } catch (MalformedURLException e) {
-            return;
-        }
-        validUrls.add(url);
-    }
-
-    private List<Heading> extractHeadings(Document document) {
-        List<Heading> headings = new ArrayList<>();
-        Elements elements = document.select(HEADLINE_SELECTOR_QUERY);
-
-        for (Element element : elements) {
-            int level = Integer.parseInt(element.tagName().substring(1));
-            String text = element.text().trim();
-            headings.add(new Heading(level, text));
-        }
-
-        return headings;
     }
 }
