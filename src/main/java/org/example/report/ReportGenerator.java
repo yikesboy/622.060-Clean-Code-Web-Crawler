@@ -10,16 +10,19 @@ import java.util.List;
 
 public class ReportGenerator implements ReportGeneratorInterface {
     private static final String ARROW_INDENTATION = ">";
+    private static final String LINK_START = "<a>";
+    private static final String LINK_END = "</a>";
+    private static final String LINE_BREAK = "<br>";
+    private static final String NEW_LINE = "\n";
+    private static final String INDENT_ELEMENT = "--";
+
 
     @Override
     public boolean generateReport(WebPage rootPage, Path outputPath) {
         StringBuilder report = new StringBuilder();
 
-        report.append("input: <a>").append(rootPage.getUrl()).append("</a>\n");
-        report.append("<br>depth: ").append(rootPage.getDepth()).append("\n");
-
+        appendPageMetadata(report, rootPage);
         appendHeadings(report, rootPage, "");
-
         appendChildPages(report, rootPage);
 
         try {
@@ -31,35 +34,51 @@ public class ReportGenerator implements ReportGeneratorInterface {
         }
     }
 
+    private void appendPageMetadata(StringBuilder report, WebPage page) {
+        report.append("input: ").append(formatLink(page.getUrl().toString())).append(NEW_LINE);
+        report.append(LINE_BREAK).append("depth: ").append(page.getDepth()).append(NEW_LINE);
+    }
+
     private void appendHeadings(StringBuilder report, WebPage page, String indentPrefix) {
         List<Heading> headings = page.getHeadings();
         for (Heading heading : headings) {
-            String headingMarker = "#".repeat(heading.getLevel()) + " ";
-            report.append(headingMarker).append(indentPrefix).append(heading.getText()).append("\n");
+            String headingMarker = "#".repeat(heading.level()) + " ";
+            report.append(headingMarker).append(indentPrefix).append(heading.text()).append(NEW_LINE);
         }
     }
 
     private void appendChildPages(StringBuilder report, WebPage page) {
         for (WebPage childPage : page.getChildPages()) {
-            report.append("\n<br>");
+            report.append(NEW_LINE).append(LINE_BREAK);
 
-            String arrowIndent = getArrowIndent(childPage.getDepth());
+            String arrowIndent = createIndentation(childPage.getDepth());
 
-            if (childPage.isBroken()) {
-                report.append(arrowIndent).append(" broken link <a>").append(childPage.getUrl()).append("</a>\n");
-            } else {
-                report.append(arrowIndent).append(" link to <a>").append(childPage.getUrl()).append("</a>\n");
-                report.append("<br>depth: ").append(childPage.getDepth()).append("\n");
-
-                appendHeadings(report, childPage, arrowIndent + " ");
-                appendChildPages(report, childPage);
-            }
+            appendLink(report, childPage, arrowIndent, childPage.isBroken());
+            appendHeadings(report, childPage, arrowIndent + " ");
+            appendChildPages(report, childPage);
         }
     }
 
-    private String getArrowIndent(int depth) {
-        String indentation = "--".repeat(Math.max(0, depth));
-        indentation += ARROW_INDENTATION;
-        return indentation;
+    private String formatLink(String url) {
+        return LINK_START + url + LINK_END;
     }
+
+    private String createIndentation(int depth) {
+        return INDENT_ELEMENT.repeat(Math.max(0, depth)) + ARROW_INDENTATION;
+    }
+
+    private void appendLink(StringBuilder report, WebPage childPage, String arrowIndent, boolean isBroken) {
+        report.append(arrowIndent)
+                .append(isBroken ? " broken link " : " link to ")
+                .append(formatLink(childPage.getUrl().toString()))
+                .append(NEW_LINE);
+
+        if (!isBroken) {
+            report.append(LINE_BREAK)
+                    .append("depth: ")
+                    .append(childPage.getDepth())
+                    .append(NEW_LINE);
+        }
+    }
+
 }
