@@ -14,15 +14,6 @@ public class WebPage {
     private final int depth;
     private final HtmlDocument document;
 
-    /*public WebPage(URL url, List<Heading> headings, int depth) {
-        this.url = url;
-        this.headings = new ArrayList<>(headings);
-        this.childPages = new ArrayList<>();
-        this.isBroken = false;
-        this.depth = depth;
-        this.document = null;
-    }*/
-
     public WebPage(URL url, List<Heading> headings, int depth, HtmlDocument document) {
         this.url = url;
         this.headings = new ArrayList<>(headings);
