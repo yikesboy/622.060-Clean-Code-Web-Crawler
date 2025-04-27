@@ -1,7 +1,7 @@
-package html.jsoup;
+package org.example.html.jsoup;
 
-import html.HtmlDocument;
-import html.HtmlDocumentFetcher;
+import org.example.html.HtmlDocument;
+import org.example.html.HtmlDocumentFetcher;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

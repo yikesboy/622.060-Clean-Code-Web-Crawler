@@ -1,8 +1,8 @@
 package org.example.parser;
 
-import html.HtmlDocument;
-import html.HtmlDocumentFetcher;
-import html.jsoup.JsoupDocumentFetcher;
+import org.example.html.HtmlDocument;
+import org.example.html.HtmlDocumentFetcher;
+import org.example.html.jsoup.JsoupDocumentFetcher;
 import org.example.models.Heading;
 import org.example.models.WebPage;
 

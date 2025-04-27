@@ -1,7 +1,7 @@
-package html.jsoup;
+package org.example.html.jsoup;
 
-import html.HtmlDocument;
-import html.HtmlElement;
+import org.example.html.HtmlDocument;
+import org.example.html.HtmlElement;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

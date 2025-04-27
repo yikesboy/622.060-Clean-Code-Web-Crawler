@@ -1,4 +1,4 @@
-package html;
+package org.example.html;
 
 public interface HtmlElement {
     String getTagName();

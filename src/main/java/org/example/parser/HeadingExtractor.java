@@ -1,7 +1,7 @@
 package org.example.parser;
 
-import html.HtmlDocument;
-import html.HtmlElement;
+import org.example.html.HtmlDocument;
+import org.example.html.HtmlElement;
 import org.example.models.Heading;
 
 import java.util.ArrayList;

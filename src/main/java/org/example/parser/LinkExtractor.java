@@ -1,7 +1,7 @@
 package org.example.parser;
 
-import html.HtmlDocument;
-import html.HtmlElement;
+import org.example.html.HtmlDocument;
+import org.example.html.HtmlElement;
 
 import java.net.MalformedURLException;
 import java.net.URL;

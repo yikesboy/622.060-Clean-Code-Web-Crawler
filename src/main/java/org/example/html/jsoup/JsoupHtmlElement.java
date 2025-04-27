@@ -1,6 +1,6 @@
-package html.jsoup;
+package org.example.html.jsoup;
 
-import html.HtmlElement;
+import org.example.html.HtmlElement;
 import org.jsoup.nodes.Element;
 
 public class JsoupHtmlElement implements HtmlElement {

@@ -1,6 +1,6 @@
 package org.example.models;
 
-import html.HtmlDocument;
+import org.example.html.HtmlDocument;
 
 import java.net.URL;
 import java.util.ArrayList;

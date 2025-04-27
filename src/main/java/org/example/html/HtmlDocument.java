@@ -1,4 +1,4 @@
-package html;
+package org.example.html;
 
 import java.util.List;
 
