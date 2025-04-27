@@ -8,22 +8,28 @@ import org.example.parser.PageParser;
 import org.example.parser.PageParserInterface;
 import org.example.report.ReportGenerator;
 import org.example.report.ReportGeneratorInterface;
+import org.example.util.ArgumentParser;
+import org.example.util.ArgumentParserInterface;
 import org.example.util.ExitStatus;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-public class WebCrawlerApp {
+public class WebCrawlerApp implements WebCrawlerAppInterface {
     private static final String DEFAULT_OUTPUT_FILE = "crawler-report.md";
+    private final ArgumentParserInterface argumentParser;
+
+    public WebCrawlerApp() {
+        this.argumentParser = new ArgumentParser();
+    }
+
+    public WebCrawlerApp(ArgumentParserInterface argumentParser) {
+        this.argumentParser = argumentParser;
+    }
 
     public ExitStatus run(String[] args) {
         try {
-            CrawlConfig config = parseArgs(args);
+            CrawlConfig config = argumentParser.parse(args);
             WebPage result = executeCrawl(config);
             return generateReport(result);
         } catch (IllegalArgumentException e) {
@@ -32,24 +38,6 @@ public class WebCrawlerApp {
         } catch (Exception e) {
             System.err.println("Unexpected error occurred: " + e.getMessage());
             return ExitStatus.UNEXPECTED_ERROR;
-        }
-    }
-
-    private CrawlConfig parseArgs(String[] args) {
-        if (args.length < 3) {
-            throw new IllegalArgumentException("Missing required arguments.");
-        }
-
-        try {
-            URL url = new URL(args[0]);
-            int depth = parseDepth(args[1]);
-            Set<String> domains = new HashSet<>(Arrays.asList(args[2].split(",")));
-
-            return new CrawlConfig(url, depth, domains);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Invalid URL provided.");
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Depth must be a valid integer.");
         }
     }
 
@@ -74,18 +62,6 @@ public class WebCrawlerApp {
         } else {
             System.out.println("Failed to generate report.");
             return ExitStatus.REPORT_FAILED;
-        }
-    }
-
-    private int parseDepth(String depthArgument) {
-        try {
-            int depth = Integer.parseInt(depthArgument);
-            if (depth < 0) {
-                throw new IllegalArgumentException("Depth must be non-negative.");
-            }
-            return depth;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Depth must be a valid integer.");
         }
     }
 
