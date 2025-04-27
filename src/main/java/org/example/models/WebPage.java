@@ -1,5 +1,7 @@
 package org.example.models;
 
+import html.HtmlDocument;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +12,24 @@ public class WebPage {
     private final List<WebPage> childPages;
     private final boolean isBroken;
     private final int depth;
+    private final HtmlDocument document;
 
-    public WebPage(URL url, List<Heading> headings, int depth) {
+    /*public WebPage(URL url, List<Heading> headings, int depth) {
         this.url = url;
         this.headings = new ArrayList<>(headings);
         this.childPages = new ArrayList<>();
         this.isBroken = false;
         this.depth = depth;
+        this.document = null;
+    }*/
+
+    public WebPage(URL url, List<Heading> headings, int depth, HtmlDocument document) {
+        this.url = url;
+        this.headings = new ArrayList<>(headings);
+        this.childPages = new ArrayList<>();
+        this.isBroken = false;
+        this.depth = depth;
+        this.document = document;
     }
 
     public WebPage(URL url, int depth, boolean isBroken) {
@@ -25,6 +38,7 @@ public class WebPage {
         this.childPages = new ArrayList<>();
         this.isBroken = isBroken;
         this.depth = depth;
+        this.document = null;
     }
 
     public URL getUrl() {
@@ -49,5 +63,9 @@ public class WebPage {
 
     public void addChildPage(WebPage childPage) {
         childPages.add(childPage);
+    }
+
+    public HtmlDocument getDocument() {
+        return document;
     }
 }

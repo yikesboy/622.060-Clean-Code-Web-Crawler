@@ -8,5 +8,5 @@ import java.util.List;
 public interface PageParserInterface {
     WebPage parse(URL url, int depth);
 
-    List<URL> extractLinks(URL url);
+    List<URL> extractLinks(WebPage url);
 }

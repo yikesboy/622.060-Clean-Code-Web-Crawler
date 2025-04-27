@@ -40,23 +40,19 @@ public class PageParser implements PageParserInterface {
         try {
             HtmlDocument document = documentFetcher.fetch(url);
             List<Heading> headings = headingExtractor.extractHeadings(document);
-            return new WebPage(url, headings, depth);
+            return new WebPage(url, headings, depth, document);
         } catch (IOException e) {
             return new WebPage(url, depth, true);
         }
     }
 
     @Override
-    public List<URL> extractLinks(URL url) {
-        if (url == null) {
+    public List<URL> extractLinks(WebPage page) {
+        if (page == null || page.isBroken()) {
             return new ArrayList<>();
         }
 
-        try {
-            HtmlDocument doc = documentFetcher.fetch(url);
-            return linkExtractor.extractLinks(doc, url);
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
+        HtmlDocument document = page.getDocument();
+        return linkExtractor.extractLinks(document, page.getUrl());
     }
 }
