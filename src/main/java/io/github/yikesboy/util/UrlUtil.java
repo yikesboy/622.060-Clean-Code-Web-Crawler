@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.Set;
 
 public class UrlUtil {
+    private UrlUtil() {
+    }
+
     public static boolean isAllowedDomain(URL url, Set<String> allowedDomains) {
         String host = url.getHost();
 

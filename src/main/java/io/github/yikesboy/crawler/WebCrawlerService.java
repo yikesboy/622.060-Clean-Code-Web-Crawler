@@ -26,15 +26,6 @@ public class WebCrawlerService implements WebCrawlerServiceInterface {
         return crawlPage(config.rootUrl(), 0, config);
     }
 
-    private void validateConfig(CrawlConfig config) {
-        if (config == null) {
-            throw new IllegalArgumentException("CrawlConfig cannot be null");
-        }
-        if (config.rootUrl() == null) {
-            throw new IllegalArgumentException("Root URL cannot be null.");
-        }
-    }
-
     private WebPage crawlPage(URL url, int currentDepth, CrawlConfig config) {
         if (url == null) {
             return null;
@@ -65,5 +56,14 @@ public class WebCrawlerService implements WebCrawlerServiceInterface {
         }
 
         return page;
+    }
+
+    private void validateConfig(CrawlConfig config) {
+        if (config == null) {
+            throw new IllegalArgumentException("CrawlConfig cannot be null");
+        }
+        if (config.rootUrl() == null) {
+            throw new IllegalArgumentException("Root URL cannot be null.");
+        }
     }
 }
