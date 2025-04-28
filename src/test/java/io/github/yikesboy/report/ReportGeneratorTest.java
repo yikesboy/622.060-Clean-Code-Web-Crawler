@@ -16,8 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("ReportGenerator Tests")
 public class ReportGeneratorTest {
@@ -103,6 +102,20 @@ public class ReportGeneratorTest {
         boolean result = reportGenerator.generateReport(page, invalidPath);
 
         assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Should create ReportGenerator with default constructor")
+    void shouldCreateWithDefaultConstructor() {
+        ReportGenerator generator = new ReportGenerator();
+
+        WebPage page = createSimplePage();
+        Path tempFile = tempDir.resolve("test-report.md");
+
+        assertNotNull(generator);
+        boolean result = generator.generateReport(page, tempFile);
+        assertTrue(result, "ReportGenerator should be able to generate a report");
+        assertTrue(Files.exists(tempFile), "Report file should exist");
     }
 
     /**
