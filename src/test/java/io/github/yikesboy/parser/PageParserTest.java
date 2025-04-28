@@ -105,12 +105,42 @@ public class PageParserTest {
     @DisplayName("Should extract links from valid page")
     void shouldExtractLinksFromValidPage() throws Exception {
         WebPage validPage = new WebPage(testUrl, List.of(), 0, htmlDocument);
-        List<URL> expectedLinks = List.of(new URL("https://example.com/page1"));
+        List<URL> expectedLinks = List.of(new URL("https://github.com/page1"));
         when(linkExtractor.extractLinks(htmlDocument, testUrl)).thenReturn(expectedLinks);
 
         List<URL> result = pageParser.extractLinks(validPage);
 
         assertEquals(expectedLinks, result);
         verify(linkExtractor).extractLinks(htmlDocument, testUrl);
+    }
+
+    @Test
+    @DisplayName("Should create PageParser with default constructor")
+    void shouldCreateWithDefaultConstructor() {
+        PageParser parser = new PageParser();
+
+        assertNotNull(parser);
+
+        try {
+            parser.parse(new URL("https://github.com"), 0);
+        } catch (IOException ignored) {
+        } catch (NullPointerException e) {
+            fail("Default constructor didn't properly initialize dependencies");
+        }
+    }
+
+    @Test
+    @DisplayName("Should create PageParser with timeout constructor")
+    void shouldCreateWithTimeoutConstructor() {
+        PageParser parser = new PageParser(10000);
+
+        assertNotNull(parser);
+
+        try {
+            parser.parse(new URL("https://github.com"), 0);
+        } catch (IOException ignored) {
+        } catch (NullPointerException e) {
+            fail("Timeout constructor didn't properly initialize dependencies");
+        }
     }
 }
