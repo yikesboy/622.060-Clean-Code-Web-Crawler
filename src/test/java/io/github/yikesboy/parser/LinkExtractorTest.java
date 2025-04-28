@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("LinkExtractor Tests")
 public class LinkExtractorTest {
-    private LinkExtractor linkExtractor;
+    private LinkExtractorInterface linkExtractor;
     private URL baseUrl;
 
     @BeforeEach
