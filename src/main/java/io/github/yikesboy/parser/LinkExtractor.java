@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LinkExtractor {
+public class LinkExtractor implements LinkExtractorInterface {
     private static final String LINK_SELECTOR = "a[href]";
     private static final String HREF_ATTRIBUTE = "href";
     private static final String JAVASCRIPT_PREFIX = "javascript:";

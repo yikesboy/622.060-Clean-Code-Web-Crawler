@@ -15,8 +15,8 @@ public class PageParser implements PageParserInterface {
     private static final int DEFAULT_TIMEOUT_MS = 5000;
 
     private final HtmlDocumentFetcher documentFetcher;
-    private final HeadingExtractor headingExtractor;
-    private final LinkExtractor linkExtractor;
+    private final HeadingExtractorInterface headingExtractor;
+    private final LinkExtractorInterface linkExtractor;
 
     public PageParser() {
         this(DEFAULT_TIMEOUT_MS);
