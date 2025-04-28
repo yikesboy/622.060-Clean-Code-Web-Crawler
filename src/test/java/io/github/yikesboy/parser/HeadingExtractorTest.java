@@ -4,7 +4,6 @@ import io.github.yikesboy.html.HtmlDocument;
 import io.github.yikesboy.html.jsoup.JsoupHtmlDocument;
 import io.github.yikesboy.models.Heading;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,13 @@ public class HeadingExtractorTest {
     @BeforeEach
     void setUp() {
         headingExtractor = new HeadingExtractor();
+    }
+
+    /**
+     * Helper method to create an HtmlDocument from HTML string
+     */
+    private HtmlDocument createHtmlDocument(String html) {
+        return new JsoupHtmlDocument(Jsoup.parse(html));
     }
 
     @Test
@@ -49,10 +55,7 @@ public class HeadingExtractorTest {
                 </body>
                 </html>
                 """;
-        Document document = Jsoup.parse(html);
-        HtmlDocument htmlDocument = new JsoupHtmlDocument(document);
-
-        List<Heading> actualHeadings = headingExtractor.extractHeadings(htmlDocument);
+        List<Heading> actualHeadings = headingExtractor.extractHeadings(createHtmlDocument(html));
 
         List<Heading> expectedHeadings = List.of(
                 new Heading(1, "First heading"),
@@ -80,10 +83,7 @@ public class HeadingExtractorTest {
                 </body>
                 </html>
                 """;
-        Document document = Jsoup.parse(html);
-        HtmlDocument htmlDocument = new JsoupHtmlDocument(document);
-
-        List<Heading> headings = headingExtractor.extractHeadings(htmlDocument);
+        List<Heading> headings = headingExtractor.extractHeadings(createHtmlDocument(html));
 
         assertTrue(headings.isEmpty());
     }
@@ -101,10 +101,7 @@ public class HeadingExtractorTest {
                 </body>
                 </html>
                 """;
-        Document document = Jsoup.parse(html);
-        HtmlDocument htmlDocument = new JsoupHtmlDocument(document);
-
-        List<Heading> headings = headingExtractor.extractHeadings(htmlDocument);
+        List<Heading> headings = headingExtractor.extractHeadings(createHtmlDocument(html));
 
         assertEquals(3, headings.size());
         assertEquals(new Heading(3, "Level 3"), headings.get(0));
