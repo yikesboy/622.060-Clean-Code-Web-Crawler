@@ -23,9 +23,19 @@ public class PageParser implements PageParserInterface {
     }
 
     public PageParser(int timeoutMs) {
-        this.documentFetcher = new JsoupDocumentFetcher(timeoutMs);
-        this.headingExtractor = new HeadingExtractor();
-        this.linkExtractor = new LinkExtractor();
+        this(
+                new JsoupDocumentFetcher(timeoutMs),
+                new HeadingExtractor(),
+                new LinkExtractor()
+        );
+    }
+
+    public PageParser(HtmlDocumentFetcher documentFetcher,
+                      HeadingExtractorInterface headingExtractor,
+                      LinkExtractorInterface linkExtractor) {
+        this.documentFetcher = documentFetcher;
+        this.headingExtractor = headingExtractor;
+        this.linkExtractor = linkExtractor;
     }
 
     @Override
