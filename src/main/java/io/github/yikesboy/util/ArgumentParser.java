@@ -45,6 +45,7 @@ public class ArgumentParser implements ArgumentParserInterface {
     private Set<String> parseDomains(String domainArgument) {
         String[] domainCandidates = domainArgument.split(",");
         Set<String> domains = new HashSet<>(List.of(domainCandidates));
+        domains.removeAll(Arrays.asList("", null));
 
         if (domains.isEmpty()) {
             throw new IllegalArgumentException("At least one domain must be specified.");
