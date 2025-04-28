@@ -5,7 +5,6 @@ import io.github.yikesboy.crawler.WebCrawlerService;
 import io.github.yikesboy.crawler.WebCrawlerServiceInterface;
 import io.github.yikesboy.models.WebPage;
 import io.github.yikesboy.parser.PageParser;
-import io.github.yikesboy.parser.PageParserInterface;
 import io.github.yikesboy.report.ReportGenerator;
 import io.github.yikesboy.report.ReportGeneratorInterface;
 import io.github.yikesboy.util.ArgumentParser;
@@ -17,14 +16,26 @@ import java.nio.file.Paths;
 
 public class WebCrawlerApp implements WebCrawlerAppInterface {
     private static final String DEFAULT_OUTPUT_FILE = "crawler-report.md";
+
     private final ArgumentParserInterface argumentParser;
+    private final WebCrawlerServiceInterface crawlerService;
+    private final ReportGeneratorInterface reportGenerator;
 
     public WebCrawlerApp() {
-        this.argumentParser = new ArgumentParser();
+        this(
+                new ArgumentParser(),
+                new WebCrawlerService(new PageParser()),
+                new ReportGenerator()
+        );
     }
 
-    public WebCrawlerApp(ArgumentParserInterface argumentParser) {
+    public WebCrawlerApp(
+            ArgumentParserInterface argumentParser,
+            WebCrawlerServiceInterface crawlerService,
+            ReportGeneratorInterface reportGenerator) {
         this.argumentParser = argumentParser;
+        this.crawlerService = crawlerService;
+        this.reportGenerator = reportGenerator;
     }
 
     public ExitStatus run(String[] args) {
@@ -43,17 +54,11 @@ public class WebCrawlerApp implements WebCrawlerAppInterface {
 
     private WebPage executeCrawl(CrawlConfig config) {
         System.out.println("Starting crawl from " + config.rootUrl());
-
-        PageParserInterface parser = createParser();
-        WebCrawlerServiceInterface crawlerService = createCrawlerService(parser);
-
         return crawlerService.crawl(config);
     }
 
     private ExitStatus generateReport(WebPage rootPage) {
-        ReportGeneratorInterface reportGenerator = creteReportGenerator();
         Path outputPath = Paths.get(DEFAULT_OUTPUT_FILE);
-
         boolean success = reportGenerator.generateReport(rootPage, outputPath);
 
         if (success) {
@@ -63,17 +68,5 @@ public class WebCrawlerApp implements WebCrawlerAppInterface {
             System.out.println("Failed to generate report.");
             return ExitStatus.REPORT_FAILED;
         }
-    }
-
-    private PageParserInterface createParser() {
-        return new PageParser();
-    }
-
-    private WebCrawlerServiceInterface createCrawlerService(PageParserInterface parser) {
-        return new WebCrawlerService(parser);
-    }
-
-    private ReportGeneratorInterface creteReportGenerator() {
-        return new ReportGenerator();
     }
 }
