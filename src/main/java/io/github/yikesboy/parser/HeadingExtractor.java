@@ -7,7 +7,7 @@ import io.github.yikesboy.models.Heading;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeadingExtractor {
+public class HeadingExtractor implements HeadingExtractorInterface {
     private static final String HEADLINE_SELECTOR_QUERY = "h1, h2, h3, h4, h5, h6";
 
     public List<Heading> extractHeadings(HtmlDocument document) {
