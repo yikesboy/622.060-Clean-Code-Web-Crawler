@@ -40,7 +40,7 @@ public class LinkExtractor implements LinkExtractorInterface {
         }
 
         String lowerHref = href.toLowerCase();
-        return !lowerHref.isEmpty() && !lowerHref.startsWith(JAVASCRIPT_PREFIX) && !lowerHref.startsWith(FRAGMENT_PREFIX);
+        return !lowerHref.startsWith(JAVASCRIPT_PREFIX) && !lowerHref.startsWith(FRAGMENT_PREFIX);
     }
 
     private void tryAddValidUrl(String href, URL baseUrl, List<URL> validUrls) {
