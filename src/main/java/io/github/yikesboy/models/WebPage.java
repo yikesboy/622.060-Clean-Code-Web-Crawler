@@ -36,11 +36,11 @@ public class WebPage {
         return url;
     }
 
-    public List<Heading> getHeadings() {
+    public synchronized List<Heading> getHeadings() {
         return headings;
     }
 
-    public List<WebPage> getChildPages() {
+    public synchronized List<WebPage> getChildPages() {
         return childPages;
     }
 
@@ -52,7 +52,7 @@ public class WebPage {
         return depth;
     }
 
-    public void addChildPage(WebPage childPage) {
+    public synchronized void addChildPage(WebPage childPage) {
         childPages.add(childPage);
     }
 
