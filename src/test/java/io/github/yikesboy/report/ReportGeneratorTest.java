@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -123,6 +124,25 @@ public class ReportGeneratorTest {
         boolean result = generator.generateReport(page, errors, tempFile);
         assertTrue(result, "ReportGenerator should be able to generate a report");
         assertTrue(Files.exists(tempFile), "Report file should exist");
+    }
+
+    @Test
+    @DisplayName("Should append error messages in report")
+    void shouldAppendErrorMessagesInReport() throws IOException {
+        ReportGenerator generator = new ReportGenerator();
+
+        WebPage page = createSimplePage();
+        Path tempFile = tempDir.resolve("test-report.md");
+        List<CrawlError> errors = new ArrayList<>();
+        errors.add(new CrawlError(new URL("https://github.com/error"), 1, "Error Message"));
+
+        boolean result = generator.generateReport(page, errors, tempFile);
+
+        assertTrue(result);
+        String content = Files.readString(tempFile);
+        assertTrue(content.contains("## Crawl Errors"));
+        assertTrue(content.contains("error at <a>https://github.com/error</a>: Error Message"));
+
     }
 
     /**
