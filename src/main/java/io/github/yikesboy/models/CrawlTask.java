@@ -7,6 +7,7 @@ import io.github.yikesboy.util.UrlUtil;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.RecursiveTask;
 
@@ -16,9 +17,9 @@ public class CrawlTask extends RecursiveTask<WebPage> {
     private final CrawlConfig config;
     private final PageParserInterface parser;
     private final Set<String> visitedUrls;
-    private final List<CrawlError> errors;
+    private final Queue<CrawlError> errors;
 
-    public CrawlTask(URL url, int currentDepth, CrawlConfig config, PageParserInterface parser, Set<String> visitedUrls, List<CrawlError> errors) {
+    public CrawlTask(URL url, int currentDepth, CrawlConfig config, PageParserInterface parser, Set<String> visitedUrls, Queue<CrawlError> errors) {
         this.url = url;
         this.currentDepth = currentDepth;
         this.config = config;
