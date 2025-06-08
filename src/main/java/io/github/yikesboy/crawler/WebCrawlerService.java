@@ -3,6 +3,7 @@ package io.github.yikesboy.crawler;
 import io.github.yikesboy.config.CrawlConfig;
 import io.github.yikesboy.models.CrawlError;
 import io.github.yikesboy.models.CrawlResult;
+import io.github.yikesboy.models.CrawlTask;
 import io.github.yikesboy.models.WebPage;
 import io.github.yikesboy.parser.PageParserInterface;
 
