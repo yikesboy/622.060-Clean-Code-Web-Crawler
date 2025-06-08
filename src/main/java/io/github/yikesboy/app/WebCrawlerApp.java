@@ -3,7 +3,7 @@ package io.github.yikesboy.app;
 import io.github.yikesboy.config.CrawlConfig;
 import io.github.yikesboy.crawler.WebCrawlerService;
 import io.github.yikesboy.crawler.WebCrawlerServiceInterface;
-import io.github.yikesboy.models.WebPage;
+import io.github.yikesboy.models.CrawlResult;
 import io.github.yikesboy.parser.PageParser;
 import io.github.yikesboy.report.ReportGenerator;
 import io.github.yikesboy.report.ReportGeneratorInterface;
@@ -41,7 +41,7 @@ public class WebCrawlerApp implements WebCrawlerAppInterface {
     public ExitStatus run(String[] args) {
         try {
             CrawlConfig config = argumentParser.parse(args);
-            WebPage result = executeCrawl(config);
+            CrawlResult result = executeCrawl(config);
             return generateReport(result);
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
@@ -52,14 +52,14 @@ public class WebCrawlerApp implements WebCrawlerAppInterface {
         }
     }
 
-    private WebPage executeCrawl(CrawlConfig config) {
+    private CrawlResult executeCrawl(CrawlConfig config) {
         System.out.println("Starting crawl from " + config.rootUrl());
         return crawlerService.crawl(config);
     }
 
-    private ExitStatus generateReport(WebPage rootPage) {
+    private ExitStatus generateReport(CrawlResult result) {
         Path outputPath = Paths.get(DEFAULT_OUTPUT_FILE);
-        boolean success = reportGenerator.generateReport(rootPage, outputPath);
+        boolean success = reportGenerator.generateReport(result.rootPage(), result.errors(), outputPath);
 
         if (success) {
             System.out.println("Crawl completed successfully. Report saved to: " + outputPath.toAbsolutePath());
