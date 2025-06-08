@@ -43,40 +43,33 @@ public class CrawlTask extends RecursiveTask<WebPage> {
 
         visitedUrls.add(normalizedUrl);
 
-        try {
-            WebPage page = parser.parse(url, currentDepth);
+        WebPage page = parser.parse(url, currentDepth);
 
-            if (currentDepth == config.maxDepth()) {
-                return page;
-            }
-
-            if (page.isBroken()) {
-                errors.add(new CrawlError(url, currentDepth, "Failed to fetch or parse page"));
-                return page;
-            }
-
-            List<URL> links = parser.extractLinks(page);
-            List<CrawlTask> tasks = new ArrayList<>();
-
-            for (URL link : links) {
-                if (link != null && UrlUtil.isAllowedDomain(link, config.allowedDomains())) {
-                    CrawlTask task = new CrawlTask(link, currentDepth + 1, config, parser, visitedUrls, errors);
-                    task.fork();
-                    tasks.add(task);
-                }
-            }
-
-            for (CrawlTask task : tasks) {
-                WebPage childPage = task.join();
-                if (childPage != null) {
-                    page.addChildPage(childPage);
-                }
-            }
-
+        if (currentDepth == config.maxDepth()) {
             return page;
-        } catch (Exception e) {
-            errors.add(new CrawlError(url, currentDepth, e.getMessage()));
-            return new WebPage(url, currentDepth, true);
         }
+
+        if (page.isBroken()) {
+            errors.add(new CrawlError(url, currentDepth, "Failed to fetch or parse page"));
+            return page;
+        }
+
+        List<URL> links = parser.extractLinks(page);
+        List<CrawlTask> tasks = new ArrayList<>();
+
+        for (URL link : links) {
+            if (UrlUtil.isAllowedDomain(link, config.allowedDomains())) {
+                CrawlTask task = new CrawlTask(link, currentDepth + 1, config, parser, visitedUrls, errors);
+                task.fork();
+                tasks.add(task);
+            }
+        }
+
+        for (CrawlTask task : tasks) {
+            WebPage childPage = task.join();
+            page.addChildPage(childPage);
+        }
+
+        return page;
     }
 }
