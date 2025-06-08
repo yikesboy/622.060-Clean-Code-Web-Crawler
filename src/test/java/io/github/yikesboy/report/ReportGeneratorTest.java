@@ -1,5 +1,6 @@
 package io.github.yikesboy.report;
 
+import io.github.yikesboy.models.CrawlError;
 import io.github.yikesboy.models.Heading;
 import io.github.yikesboy.models.WebPage;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,9 @@ public class ReportGeneratorTest {
     void shouldGenerateReportForSimplePage() throws IOException {
         WebPage page = createSimplePage();
         Path outputPath = tempDir.resolve("simple-report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
-        boolean result = reportGenerator.generateReport(page, outputPath);
+        boolean result = reportGenerator.generateReport(page, errors, outputPath);
 
         assertTrue(result);
         assertTrue(Files.exists(outputPath));
@@ -53,8 +55,9 @@ public class ReportGeneratorTest {
     void shouldGenerateReportWithNestedPages() throws IOException {
         WebPage rootPage = createPageWithChildren();
         Path outputPath = tempDir.resolve("nested-report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
-        boolean result = reportGenerator.generateReport(rootPage, outputPath);
+        boolean result = reportGenerator.generateReport(rootPage, errors, outputPath);
 
         assertTrue(result);
         String content = Files.readString(outputPath);
@@ -69,8 +72,9 @@ public class ReportGeneratorTest {
     void shouldIndicateBrokenLinks() throws IOException {
         WebPage rootPage = createPageWithBrokenChild();
         Path outputPath = tempDir.resolve("broken-links-report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
-        boolean result = reportGenerator.generateReport(rootPage, outputPath);
+        boolean result = reportGenerator.generateReport(rootPage, errors, outputPath);
 
         assertTrue(result);
         String content = Files.readString(outputPath);
@@ -83,8 +87,9 @@ public class ReportGeneratorTest {
     void shouldHandleMultipleHeadings() throws IOException {
         WebPage page = createPageWithMultipleHeadings();
         Path outputPath = tempDir.resolve("multiple-headings-report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
-        boolean result = reportGenerator.generateReport(page, outputPath);
+        boolean result = reportGenerator.generateReport(page, errors, outputPath);
 
         assertTrue(result);
         String content = Files.readString(outputPath);
@@ -98,8 +103,9 @@ public class ReportGeneratorTest {
     void shouldReturnFalseWhenWritingFails() {
         WebPage page = createSimplePage();
         Path invalidPath = Path.of("/invalid/directory/report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
-        boolean result = reportGenerator.generateReport(page, invalidPath);
+        boolean result = reportGenerator.generateReport(page, errors, invalidPath);
 
         assertFalse(result);
     }
@@ -111,9 +117,10 @@ public class ReportGeneratorTest {
 
         WebPage page = createSimplePage();
         Path tempFile = tempDir.resolve("test-report.md");
+        List<CrawlError> errors = Collections.emptyList();
 
         assertNotNull(generator);
-        boolean result = generator.generateReport(page, tempFile);
+        boolean result = generator.generateReport(page, errors, tempFile);
         assertTrue(result, "ReportGenerator should be able to generate a report");
         assertTrue(Files.exists(tempFile), "Report file should exist");
     }
