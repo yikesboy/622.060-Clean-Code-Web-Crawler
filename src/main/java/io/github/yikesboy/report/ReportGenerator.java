@@ -1,5 +1,6 @@
 package io.github.yikesboy.report;
 
+import io.github.yikesboy.models.CrawlError;
 import io.github.yikesboy.models.Heading;
 import io.github.yikesboy.models.WebPage;
 
@@ -18,12 +19,13 @@ public class ReportGenerator implements ReportGeneratorInterface {
 
 
     @Override
-    public boolean generateReport(WebPage rootPage, Path outputPath) {
+    public boolean generateReport(WebPage rootPage, List<CrawlError> errors, Path outputPath) {
         StringBuilder report = new StringBuilder();
 
         appendPageMetadata(report, rootPage);
         appendHeadings(report, rootPage, "");
         appendChildPages(report, rootPage);
+        appendErrors(report, errors);
 
         try {
             Files.writeString(outputPath, report.toString());
@@ -59,6 +61,23 @@ public class ReportGenerator implements ReportGeneratorInterface {
         }
     }
 
+    private void appendErrors(StringBuilder report, List<CrawlError> errors) {
+        if (errors.isEmpty()) {
+            return;
+        }
+
+        report.append(NEW_LINE).append(LINE_BREAK).append("## Crawl Errors").append(NEW_LINE);
+        for (CrawlError error : errors) {
+            String arrowIndent = createIndentation(error.depth());
+            report.append(arrowIndent)
+                    .append(" error at ")
+                    .append(formatLink(error.url().toString()))
+                    .append(": ")
+                    .append(error.message())
+                    .append(NEW_LINE);
+        }
+    }
+
     private String formatLink(String url) {
         return LINK_START + url + LINK_END;
     }
@@ -80,5 +99,4 @@ public class ReportGenerator implements ReportGeneratorInterface {
                     .append(NEW_LINE);
         }
     }
-
 }
