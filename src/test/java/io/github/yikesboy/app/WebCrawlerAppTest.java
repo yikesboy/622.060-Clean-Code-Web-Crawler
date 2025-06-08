@@ -2,6 +2,7 @@ package io.github.yikesboy.app;
 
 import io.github.yikesboy.config.CrawlConfig;
 import io.github.yikesboy.crawler.WebCrawlerServiceInterface;
+import io.github.yikesboy.models.CrawlResult;
 import io.github.yikesboy.models.WebPage;
 import io.github.yikesboy.report.ReportGeneratorInterface;
 import io.github.yikesboy.util.ArgumentParserInterface;
@@ -21,8 +22,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,13 +37,15 @@ public class WebCrawlerAppTest {
     private WebCrawlerApp webCrawlerApp;
     private CrawlConfig testConfig;
     private WebPage testRootPage;
+    private CrawlResult testCrawlResult;
 
     @BeforeEach
     void setUp() throws MalformedURLException {
         webCrawlerApp = new WebCrawlerApp(argumentParser, crawlerService, reportGenerator);
         URL testUrl = new URL("https://github.com");
         testConfig = new CrawlConfig(testUrl, 2, Set.of("https://github.com"));
-        testRootPage = new WebPage(testUrl, Collections.emptyList(), 0, null);
+        testRootPage = new WebPage(testUrl, 0, false);
+        testCrawlResult = new CrawlResult(testRootPage, Collections.emptyList());
     }
 
     @Test
@@ -52,8 +53,8 @@ public class WebCrawlerAppTest {
     void shouldReturnSuccessStatus() {
         String[] args = {"https://github.com", "2", "https://github.com"};
         when(argumentParser.parse(args)).thenReturn(testConfig);
-        when(crawlerService.crawl(testConfig)).thenReturn(testRootPage);
-        when(reportGenerator.generateReport(eq(testRootPage), any(Path.class)))
+        when(crawlerService.crawl(testConfig)).thenReturn(testCrawlResult);
+        when(reportGenerator.generateReport(any(WebPage.class), anyList(), any(Path.class)))
                 .thenReturn(true);
 
         ExitStatus result = webCrawlerApp.run(args);
@@ -61,7 +62,7 @@ public class WebCrawlerAppTest {
         assertEquals(ExitStatus.SUCCESS, result);
         verify(argumentParser).parse(args);
         verify(crawlerService).crawl(testConfig);
-        verify(reportGenerator).generateReport(eq(testRootPage), any(Path.class));
+        verify(reportGenerator).generateReport(any(WebPage.class), anyList(), any(Path.class));
     }
 
     @Test
@@ -98,8 +99,8 @@ public class WebCrawlerAppTest {
     void shouldReturnReportFailedStatus() {
         String[] args = {"https://github.com", "2", "https://github.com"};
         when(argumentParser.parse(args)).thenReturn(testConfig);
-        when(crawlerService.crawl(testConfig)).thenReturn(testRootPage);
-        when(reportGenerator.generateReport(eq(testRootPage), any(Path.class)))
+        when(crawlerService.crawl(testConfig)).thenReturn(testCrawlResult);
+        when(reportGenerator.generateReport(any(WebPage.class), anyList(), any(Path.class)))
                 .thenReturn(false);
 
         ExitStatus result = webCrawlerApp.run(args);
@@ -107,7 +108,8 @@ public class WebCrawlerAppTest {
         assertEquals(ExitStatus.REPORT_FAILED, result);
         verify(argumentParser).parse(args);
         verify(crawlerService).crawl(testConfig);
-        verify(reportGenerator).generateReport(eq(testRootPage), any(Path.class));
+        verify(reportGenerator).generateReport(any(WebPage.class), anyList(), any(Path.class));
+
     }
 
     @Test
